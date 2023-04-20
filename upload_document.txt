@@ -1,0 +1,34 @@
+Complete this document and upload along with your prediction results and your code.
+
+### Method Name ###
+Use a phrasal name to describe your method, e.g. training a BiLSTM cross-encoder from scratch, fine-tuning RoBERTa-large-MNLI, etc.
+
+fine-tuning RoBERTa-large-MNLI model
+
+### Sentence pair encoder ###
+Use up to 5 sentences to describe your encoder for the sentence pairs. Need to mention the following:
+- Is it a bi-encoder or cross-encoder?
+- What type of encoder (LSTM, Transformer, etc.)
+- Is it based on a pre-trained model (BERT-large? RoBERTa-large-SNLI? BART-large-MNLI?) or completely trained from scratch by yourself (then how do you chracterize the words and aggregate them into sentence representations)?
+
+I used Transformers. I encoded preconditions and statements using RoBERTa-large-MNLI model tokenizer from hugging face and padded sequence to generate attention mask. This encoding technique works as a bi-encoder which independently produces sentence embedding for sentence pairs.I am using a RoBERTa-large-MNLI model and RoBERTa tokenizers imported using transformers.
+
+### Training & Development ###
+
+Up to 5 sentences: how did you evaluate your solution using the dev set before submitting to the leaderboard? What are some key hyperparameter values (e.g., optimizer, learning rate, batch size, etc.)? Did you fine-tune your model or just conducted zero-shot transfer from a pre-trained model? If fine-tuning, what portion of data did you use and how did you terminate the training (using a fixed #epochs, early stopping based on dev set performance)?
+
+The sentence embedding generated independently by both sentences pair are passed through a RoBERTa-large-MNLI model and performs training. The dev dataset accuracy is evaluated using the training performed on training data.  
+optimizer=Adam
+learning rate=1e-5
+loss_func=Sparse Categorical CrossEntropy
+
+### Other methods ###
+
+I tried BERT-pertained-model which gave an accuracy of 84.5%, RoBERTaXLM model which gave an accuracy of 90.1% and RoBERTa-base model which gave an accuracy of 88%.
+
+### Packages ###
+List the key python packages you have used in this assignment.
+
+import tensorflow as tf
+from tensorflow import keras
+from transformers import BertTokenizer, TFBertModel, TFAutoModel,AutoTokenizer
